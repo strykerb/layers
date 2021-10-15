@@ -7,7 +7,58 @@ Your sounds will loop.
 Use loops to make a song.
 `;
 
-characters = [];
+characters = [
+`
+  yy  
+ yYYy 
+yYyyYy
+yYyyYy
+ yYYy
+  yy
+`,`
+C P pc
+   pcp
+C pcp 
+cpcp P
+pcp   
+CpcC C
+`,`
+  lL  
+ LLlL
+ lLLL 
+  yr  
+ rYly
+  Ly
+`,`
+  rr  
+ r rr 
+rrrr r
+r  rrr
+ YlYl 
+ YYYY 
+`,`
+R    r
+ r  R 
+  Rr
+  rR  
+ R  r 
+r    R
+`,`
+  ll  
+  ll l
+llllll
+l ll  
+  l ll
+ ll  l
+`,`
+gG  Gg
+ gGGg 
+G gg G
+gG  Gg
+ gGGg 
+  gg  
+`
+];
 
 
 options = {
