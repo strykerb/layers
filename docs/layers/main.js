@@ -18,13 +18,13 @@ options = {
 
 const S = {
   LOOP_LENGTH: 480,
-
+  HOLD_BUTTON_THRESHOLD: 100,
 }
  
  /**
   * @type { SoundEffectType[] }
   */
-let sounds;
+let sounds = [ "coin", "laser", "explosion", "powerUp", "hit", "jump", "select"];
 
 /**
  * @typedef {{
@@ -36,8 +36,38 @@ let sounds;
   * @type { Layer[] }
   */
 let layers;
-let currLayer = 0;
 
+let descriptionA = [
+  "chilly",
+  "frigid",
+  "frosty",
+  "refreshing",
+  "air-conditioned",
+  "arctic",
+  "chilling",
+  "refrigerated",
+  "cold",
+  "sick",
+]
+
+let descriptionB = [
+  "anthem",
+  "ballad",
+  "chant",
+  "chorus",
+  "hymn",
+  "lullaby",
+  "melody",
+  "piece",
+  "shanty",
+  "tune",
+  "verse",
+  "beat",
+]
+
+
+let currLayer = 0;
+let buttonDuration = 0;
 
 function update() {
   if (!ticks) {
@@ -49,8 +79,21 @@ function update() {
     play(sounds[currLayer]);
     console.log(ticks);
   }
-  
-  // Move to next layer
+
+  if (input.isPressed){
+    buttonDuration++;
+  } else {
+    buttonDuration = 0;
+  }
+
+  // Quit game if player holds the button
+  if (buttonDuration >= S.HOLD_BUTTON_THRESHOLD){
+    buttonDuration = 0;
+    // Randomize game over text
+    end("What a " + descriptionA[rndi(descriptionA.length)] + " " + descriptionB[rndi(descriptionB.length)] + "!");
+  }
+
+  // Move to next layer if current loop is finished
   if (floor(ticks/S.LOOP_LENGTH) > currLayer){
     if (currLayer >= sounds.length){
       CompleteSong();
@@ -60,7 +103,9 @@ function update() {
     }
   }
 
+  // Play previous sounds from this time stamp
   CheckPrevLayers();
+
 }
 
 function addKeyStrokeToLayer(){
@@ -83,17 +128,20 @@ function CheckPrevLayers(){
 }
 
 function CompleteSong(){
+  // TO-DO: Stop taking input once we reach this point
+  // TO-DO: Add text saying to hold button to quit
+  
   console.log("song done");
 }
 
 function Initialize(){
   console.log(options.seed);
-  sounds = [ "coin", "laser", "explosion", "powerUp", "hit", "jump", "select"];
+  
+  // Initialize 2D Array of timestamps
   layers = times(sounds.length, () => {
     return {
         inputs: []
     };
   });
   console.log(layers);
-  //layers[0] = {inputs: []};
 }
