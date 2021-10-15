@@ -2,12 +2,9 @@ title = "LAYERS";
 
 
 description = `
-Click to make a 
-sound. Each new 
-layer has a new 
-sound. Build up 
-sounds in layers 
-to make a song.
+Click to make a sound.
+Your sounds will loop.
+Use loops to make a song.
 `;
 
 characters = [];
@@ -17,11 +14,10 @@ options = {
   viewSize: { x: 200, y: 100 },
   isPlayingBgm: true,
   seed: rndi(100),
-
 };
 
 const S = {
-  LOOP_LENGTH: 600,
+  LOOP_LENGTH: 480,
 
 }
  
