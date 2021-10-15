@@ -56,34 +56,34 @@ function update() {
   
   // Move to next layer
   if (floor(ticks/S.LOOP_LENGTH) > currLayer){
-    console.log("nect layer");
     if (currLayer >= sounds.length){
       CompleteSong();
     } else {
       currLayer++;
+      console.log("Layer " + currLayer);
     }
-    console.log(layers);
   }
 
   CheckPrevLayers();
 }
 
 function addKeyStrokeToLayer(){
-  layers[currLayer].inputs.push(ticks);
-  console.log("adding " + ticks + " to layer " + currLayer);
+  layers[currLayer].inputs.push(ticks % S.LOOP_LENGTH);
 }
 
 function CheckPrevLayers(){
-  let idx = 0;
-  layers.forEach(layer => {
-    let timeStamp = ticks % S.LOOP_LENGTH;
-    if (layer.inputs[0] == timeStamp){
-      play(sounds[idx]);
-      // dequeue and requeue this sound if 
-      layer.inputs.push(layer.inputs.shift());
+  let i;
+  let timeStamp = ticks % S.LOOP_LENGTH;
+  for(i = 0; i < layers.length; i++){
+    if (layers[i].inputs[0] == timeStamp){
+      
+      play(sounds[i]);
+      
+      // dequeue and requeue this sound
+      layers[i].inputs.push(layers[i].inputs.shift());
     }
-    idx++;
-  });
+  }
+  
 }
 
 function CompleteSong(){
