@@ -85,7 +85,6 @@ let charArray = ["a", "b", "c", "d", "e", "f", "g"];
   */
 let layers;
 let timer = S.LOOP_LENGTH;
-let angle = 0;
 let sequencerLength = 0;
 let direction = 0.08;
 let patterns = [];
@@ -143,12 +142,12 @@ function update() {
 
   if(sequencerLength == 0 && numberOfLayers < 7){
       console.log("layer ", numberOfLayers);
-      numberOfLayers++;
-      const posY = numberOfLayers * S.V_OFFSET;   //1
+      const posY = (numberOfLayers + 1) * S.V_OFFSET;   //1
       barList.push({
         pos: vec(0, posY)
       });  //each loop, push a moving progress bar to the barList
       sequencerLength = 480;
+      numberOfLayers++;
   }
 
   sequencerLength--;  //counting layers
@@ -159,6 +158,7 @@ function update() {
     bar(0 ,b.pos.y, barLength, 1, 0);
   });
 
+  //write music notes
   if(input.isJustPressed){
     addKeyStrokeToLayer(barLength, numberOfLayers);
     play(sounds[currLayer]);
@@ -176,8 +176,6 @@ function update() {
     }
   });
 
-  angle += direction;
-
   if (input.isPressed){
     buttonDuration++;
   } else {
@@ -187,6 +185,15 @@ function update() {
   // Quit game if player holds the button
   if (buttonDuration >= S.HOLD_BUTTON_THRESHOLD){
     buttonDuration = 0;
+    while(patterns.length > 0){
+      patterns.shift();
+    }
+    while(barList.length > 0){
+      barList.shift();
+    }
+    numberOfLayers = 0;
+    sequencerLength = 0;
+    barLength = 0;
     // Randomize game over text
     end("What a " + descriptionA[rndi(descriptionA.length)] + " " + descriptionB[rndi(descriptionB.length)] + "!");
   }
@@ -200,9 +207,6 @@ function update() {
       console.log("Layer " + currLayer);
     }
   }
-
-  color("black");
-  //draw the progress bar
   
   // Play previous sounds from this time stamp
   CheckPrevLayers();
@@ -212,25 +216,19 @@ function update() {
 function addKeyStrokeToLayer(barLength, numberOfLayers){
 
   layers[currLayer].inputs.push(ticks % S.LOOP_LENGTH);
-  
-  //insert your visual code here
-  
   timeStamp = ticks % S.LOOP_LENGTH;
   
   const posX = barLength / 2;
-  const posY = numberOfLayers * S.V_OFFSET;
-  
+  const posY = (numberOfLayers) * S.V_OFFSET;
+  //n: the sprite type
   patterns.push({
     pos: vec(posX, posY),
     n: numberOfLayers - 1
   });
-
-  direction = rnd(0.16, -0.16);
-  direction *= -1;
 }
 
 function CheckPrevLayers(){
-  
+
   let i;
   let timeStamp = ticks % S.LOOP_LENGTH;
 
@@ -261,10 +259,4 @@ function Initialize(){
     };
   });
   console.log(layers);
-}
-
-function DrawAndStay(){
-    color("yellow");
-    bar(50, 50, 10, 3, angle);
-    angle++;    
 }
