@@ -194,6 +194,7 @@ function update() {
     numberOfLayers = 0;
     sequencerLength = 0;
     barLength = 0;
+    currLayer = 0;
     // Randomize game over text
     end("What a " + descriptionA[rndi(descriptionA.length)] + " " + descriptionB[rndi(descriptionB.length)] + "!");
   }
@@ -260,3 +261,4 @@ function Initialize(){
   });
   console.log(layers);
 }
+
